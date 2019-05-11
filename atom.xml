@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://hanekawasann.github.io/"/>
-  <updated>2019-05-07T15:48:05.459Z</updated>
+  <updated>2019-05-11T02:25:37.607Z</updated>
   <id>https://hanekawasann.github.io/</id>
   
   <author>
@@ -15,6 +15,58 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>关于几原邦彦，你还需要知道什么？</title>
+    <link href="https://hanekawasann.github.io/2019/05/11/%E5%85%B3%E4%BA%8E%E5%87%A0%E5%8E%9F%E9%82%A6%E5%BD%A6%EF%BC%8C%E4%BD%A0%E8%BF%98%E9%9C%80%E8%A6%81%E7%9F%A5%E9%81%93%E4%BB%80%E4%B9%88%EF%BC%9F/"/>
+    <id>https://hanekawasann.github.io/2019/05/11/关于几原邦彦，你还需要知道什么？/</id>
+    <published>2019-05-11T02:20:37.000Z</published>
+    <updated>2019-05-11T02:25:37.607Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>他曾说过：“学校就是个庭院盆景，更不用说它作为‘一个社会’是‘现实社会的微缩景区’。在那个社会中的我，只是一个平凡的人。没有在休息时间流连厕所抽烟的勇气、也没有抓起教师的前胸的勇气，同时我也明白自己是因为讨厌这种事所以才无法做出来。”<br>长大后的几原邦彦回忆过自己的青春后，如此说道，“自那以后十几年，现实是残酷的，我最终还是成为了一个平凡的大人。已经背叛了多少个绝对不能背叛的人，做到这份上，得到的却只是个平凡的自己。但，在这个禁止人们知晓各种事情的世界里，我依然在秘密地作着梦，依旧秘密地犹豫着是否要成为一个独当一面的大人。”<br>大人是几原邦彦非常喜欢使用的一个词汇，其主要代表作品的主题也涉及到“成为大人”这一命题，几原邦彦语境中的“大人”到底是怎么样的人？</p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;blockquote&gt;
+&lt;p&gt;他曾说过：“学校就是个庭院盆景，更不用说它作为‘一个社会’是‘现实社会的微缩景区’。在那个社会中的我，只是一个平凡的人。没有在休息时间流连厕所抽烟的勇气、也没有抓起教师的前胸的勇气，同时我也明白自己是因为讨厌这种事所以才无法做出来。”&lt;br&gt;长大后
+      
+    
+    </summary>
+    
+      <category term="ACG" scheme="https://hanekawasann.github.io/categories/ACG/"/>
+    
+    
+      <category term="几原邦彦" scheme="https://hanekawasann.github.io/tags/%E5%87%A0%E5%8E%9F%E9%82%A6%E5%BD%A6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java内存区域</title>
+    <link href="https://hanekawasann.github.io/2019/05/11/Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/"/>
+    <id>https://hanekawasann.github.io/2019/05/11/Java内存区域/</id>
+    <published>2019-05-11T02:15:10.000Z</published>
+    <updated>2019-05-11T02:16:52.831Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="Java内存区域.png" alt="Java内存区域.png"></p><h2 id="程序计数器-Program-Counter-Register"><a href="#程序计数器-Program-Counter-Register" class="headerlink" title="程序计数器 Program Counter Register"></a>程序计数器 Program Counter Register</h2><p>程序计数器可以看做是当前线程所执行的字节码的行号指示器，它是线程私有的。此内存区域是唯一一个在Java虚拟机规范中没有规定任何OutOfMemoryError情况的区域。</p><h2 id="Java虚拟机栈-Java-Virtual-Machine-Stacks"><a href="#Java虚拟机栈-Java-Virtual-Machine-Stacks" class="headerlink" title="Java虚拟机栈 Java Virtual Machine Stacks"></a>Java虚拟机栈 Java Virtual Machine Stacks</h2><p>虚拟机栈描述的是Java方法执行的内存模型：每个方法在执行的同时都会创建一个栈帧（Stack Frame）用于存储局部变量、操作树栈、动态链接、方法出口等信息，它是私有的。</p><p>如果线程请求的栈深度大于虚拟机机所允许的深度将抛出StackOverflowError异常；如果虚拟机栈可以动态扩展，如果扩展时无法申请到足够的内存，就会抛出OutOfMemoryError异常。</p><h2 id="本地方法栈-Native-Method-Stack"><a href="#本地方法栈-Native-Method-Stack" class="headerlink" title="本地方法栈 Native Method Stack"></a>本地方法栈 Native Method Stack</h2><p>本地方法栈是虚拟机使用到的Native方法服务。与虚拟机一样，本地方法栈区域也会抛出StackOverflowError和OutOfMemoryError异常。</p><h2 id="Java堆-Java-Heap"><a href="#Java堆-Java-Heap" class="headerlink" title="Java堆 Java Heap"></a>Java堆 Java Heap</h2><p>Java堆是被所有线程共享的一块内存区域，在虚拟机启动时创建。此内存区域的唯一目的是存放对象实例。Java堆是垃圾收集器的主要区域，所有也被称为“GC堆”（Garbage Collected Heap）。如果在堆中没有内存完成实例分配，并且堆也无法再扩展时，将会抛出OutOfMemoryError异常。</p><h2 id="方法区-Method-Area"><a href="#方法区-Method-Area" class="headerlink" title="方法区 Method Area"></a>方法区 Method Area</h2><p>方法区用于存储已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。当方法区无法满足内存分配需求时，将抛出OutOfMemoryError异常。</p><h2 id="运行时常量池-Runtime-Constant-Pool"><a href="#运行时常量池-Runtime-Constant-Pool" class="headerlink" title="运行时常量池 Runtime Constant Pool"></a>运行时常量池 Runtime Constant Pool</h2><p>运行时常量池是方法区的一部分，用于存放编译器生成的各种字面量和符号引用。运行时常量池具有动态性，并非预置入Class文件中常量池的内容才能进入方法区运行常量池，运行期间也可能将新的常量放入池中，这种特性常被开发人员利用得比较多的便是<code>java.lang.String#intern</code>。它也受到方法区内存的限制，当常量池无法再申请到内存时会抛出OutOfMemoryError异常。</p><h2 id="直接内存-Direct-Memory"><a href="#直接内存-Direct-Memory" class="headerlink" title="直接内存 Direct Memory"></a>直接内存 Direct Memory</h2><p>直接内存并不是虚拟机运行时的数据区的一部分，也不是Java虚拟机规范中定义的内存区域。它可以使用Native函数库直接分配堆外内存，然后通过一个存储在Java堆中的DirectByteBuffer对象作为这块内存的应用进行操作。当各个内存区域总和大于物理内存限制，也会导致动态扩展时出现OutOfMemoryError异常。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;img src=&quot;Java内存区域.png&quot; alt=&quot;Java内存区域.png&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;程序计数器-Program-Counter-Register&quot;&gt;&lt;a href=&quot;#程序计数器-Program-Counter-Register&quot; class=&quot;
+      
+    
+    </summary>
+    
+      <category term="软件开发" scheme="https://hanekawasann.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="JVM" scheme="https://hanekawasann.github.io/tags/JVM/"/>
+    
+  </entry>
   
   <entry>
     <title>就算世界毁灭，我们也要继续相恋</title>
