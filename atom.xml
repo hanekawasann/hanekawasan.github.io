@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://hanekawasann.github.io/"/>
-  <updated>2019-05-12T12:56:43.909Z</updated>
+  <updated>2019-05-15T16:13:40.976Z</updated>
   <id>https://hanekawasann.github.io/</id>
   
   <author>
@@ -15,6 +15,36 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Let&#39;s all love Lain</title>
+    <link href="https://hanekawasann.github.io/2019/05/16/Let-s-all-love-Lain/"/>
+    <id>https://hanekawasann.github.io/2019/05/16/Let-s-all-love-Lain/</id>
+    <published>2019-05-15T16:08:57.000Z</published>
+    <updated>2019-05-15T16:13:40.976Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>Ｌｅｔ＇ｓ　ａｌｌ　ｌｏｖｅ　ＬＡＩＮ</p></blockquote><iframe src="//player.bilibili.com/player.html?aid=50455089&cid=88328663&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;blockquote&gt;
+&lt;p&gt;Ｌｅｔ＇ｓ　ａｌｌ　ｌｏｖｅ　ＬＡＩＮ&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;iframe src=&quot;//player.bilibili.com/player.html?aid=50455089&amp;cid=88328663&amp;page=1&quot; scrol
+      
+    
+    </summary>
+    
+      <category term="ACG" scheme="https://hanekawasann.github.io/categories/ACG/"/>
+    
+    
+      <category term="音乐" scheme="https://hanekawasann.github.io/tags/%E9%9F%B3%E4%B9%90/"/>
+    
+      <category term="Lain" scheme="https://hanekawasann.github.io/tags/Lain/"/>
+    
+  </entry>
   
   <entry>
     <title>关于String.intern</title>
