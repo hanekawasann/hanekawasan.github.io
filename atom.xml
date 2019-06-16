@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://hanekawasann.github.io/"/>
-  <updated>2019-06-02T12:43:04.507Z</updated>
+  <updated>2019-06-16T14:19:43.560Z</updated>
   <id>https://hanekawasann.github.io/</id>
   
   <author>
@@ -15,6 +15,134 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>自动内存管理机制之内存分配与回收策略</title>
+    <link href="https://hanekawasann.github.io/2019/06/16/%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6%E4%B9%8B%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E4%B8%8E%E5%9B%9E%E6%94%B6%E7%AD%96%E7%95%A5/"/>
+    <id>https://hanekawasann.github.io/2019/06/16/自动内存管理机制之内存分配与回收策略/</id>
+    <published>2019-06-16T14:19:19.000Z</published>
+    <updated>2019-06-16T14:19:43.560Z</updated>
+    
+    <content type="html"><![CDATA[<p>新生代GC（Minor GC）：指发生在新生代的垃圾收集动作，因为Java对象都具备朝生夕灭的特征，所以该GC非常频繁，一般回收速度也比较快。</p><p>老年代GC（Major GC / Full GC）：值发生在老年代的GC，出现了Major GC，经常会伴随至少一次的Minor GC。Major GC的速度一般会比Minor GC慢10倍以上。</p><h2 id="对象优先在Eden分配"><a href="#对象优先在Eden分配" class="headerlink" title="对象优先在Eden分配"></a>对象优先在Eden分配</h2><p>大多数情况下，对象在新生代Eden区中分配。当Eden区中没有足够空间进行分配时，虚拟机将发起一次Minor GC。</p><h2 id="大对象直接进入老年代"><a href="#大对象直接进入老年代" class="headerlink" title="大对象直接进入老年代"></a>大对象直接进入老年代</h2><p>所谓大对象是指需要连续内存空间的Java对象，最典型的大对象就是那种很长的字符串以及数组。</p><h2 id="长期存活对象将进入老年代"><a href="#长期存活对象将进入老年代" class="headerlink" title="长期存活对象将进入老年代"></a>长期存活对象将进入老年代</h2><p>虚拟机给每个对象定义了一个对象年龄计数器。如果对象在Eden出生并经过第一次Minor GC后仍然存活，并且能被Surivor容纳的话，将被移动到Surivor空间中，并且对象年龄设为1。对象在Surivor中每经历一次Minor GC并存会，年龄就增加1，当年龄增加到一定程度（默认15岁），就将被晋升到老年代中。</p><h2 id="动态对象年龄判定"><a href="#动态对象年龄判定" class="headerlink" title="动态对象年龄判定"></a>动态对象年龄判定</h2><p>如果在Survivor空间中相同年龄所有对象大小的总和大于Survivor空间的一半，年龄大于或等于该年龄的对象就可以直接进入老年代，无须等到一定程序。</p><h2 id="空间分配担保"><a href="#空间分配担保" class="headerlink" title="空间分配担保"></a>空间分配担保</h2><p>在发生Minor GC之前，虚拟机会检查老年代最大可用的连续空间是否大于新生代所有对象总空间，如果成立，那么Minor GC可以确保是安全的。如果不成立，则虚拟机会查看HandlePromotionFailure设置值是否允许担保失败。如果允许，那么会继续检查老年代最大可用的连续空间是否大于历次晋升到老年代对象的平均大小，如果大于，将尝试进行一次Minor GC。如果失败，那么会在失败后重新发起一次Full GC；如果小于，或者HandlePromotionFailure设置不允许冒险，那这时也要改为进行一次Full GC。</p><p>在JDK6 Update24之后，只要老年代的连续空间大于新生代对象总大小或者历次晋升的平均大小就会进行Minor GC，否则将进行Full GC。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;新生代GC（Minor GC）：指发生在新生代的垃圾收集动作，因为Java对象都具备朝生夕灭的特征，所以该GC非常频繁，一般回收速度也比较快。&lt;/p&gt;
+&lt;p&gt;老年代GC（Major GC / Full GC）：值发生在老年代的GC，出现了Major GC，经常会伴随至少一次
+      
+    
+    </summary>
+    
+      <category term="软件开发" scheme="https://hanekawasann.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="JVM" scheme="https://hanekawasann.github.io/tags/JVM/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>自动内存管理机制之垃圾回收器</title>
+    <link href="https://hanekawasann.github.io/2019/06/16/%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6%E4%B9%8B%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8/"/>
+    <id>https://hanekawasann.github.io/2019/06/16/自动内存管理机制之垃圾回收器/</id>
+    <published>2019-06-16T14:18:17.000Z</published>
+    <updated>2019-06-16T14:18:40.041Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="./_image/垃圾收集器.png" alt></p><h2 id="Serial收集器"><a href="#Serial收集器" class="headerlink" title="Serial收集器"></a>Serial收集器</h2><p>Serial采用复制算法，是单线程收集器。这不仅仅意味着它只会使用一个CPU或者一条收集线程去完成垃圾收集工作，更重要的是在它进行垃圾收集时，必须暂停其他所有的工作线程，直到它收集结束。</p><p>该收集器简单而高效（与其他收集器的单线程相比），对于限定单个CPU的环境来说，Serial收集器由于没有线程交互的开销。是虚拟机运行在Client模式下的默认新生代收集器。在桌面应用场景中，分配给虚拟机管理的内存一般来说不会很大，停顿时间可以控制在几十毫秒到一百多毫秒。所以，该收集器是在Client模式下的默认新生代收集器。</p><h2 id="ParNew收集器"><a href="#ParNew收集器" class="headerlink" title="ParNew收集器"></a>ParNew收集器</h2><p>该收集器是Serial收集器的多线程版本（其他实现完全一样）。它是第一款并发收集器，让垃圾收集线程与用户线程（基本上）同时工作。</p><p>它是Server模式下的虚拟机中首选的新生代收集器，除了Serial收集器以外，唯一能与CMS收集器配合工作的收集器。</p><h2 id="Parallel-Scavenge收集器"><a href="#Parallel-Scavenge收集器" class="headerlink" title="Parallel Scavenge收集器"></a>Parallel Scavenge收集器</h2><p>该收集器的目标是达到一个可控制的吞吐量，被称为“吞吐量优先”收集器。所谓吞吐量就是CPU用于运行用户代码的时间与CPU总消耗时间的比值。</p><p>停顿时间越短就越适合需要与用户交互的程序，良好的响应速度能提升用户体验，而高吞吐量则可以高效率地利用CPU时间，尽快完成程序的运算任务，主要适合在后台运算而不需要太多交互的任务。</p><h2 id="Serial-Old收集器"><a href="#Serial-Old收集器" class="headerlink" title="Serial Old收集器"></a>Serial Old收集器</h2><p>该收集器是Serial收集器的老年代版本。</p><p>该收集器主要意义也是在于给Client模式下的虚拟机使用。如果在Server模式下，它可以在JDK5之前与Parallel Scavenge收集器搭配，另外可以作为CMS收集器的后备方案，在并发收集发生Concurrent Mode Failure时使用。</p><h2 id="Parallel-Old收集器"><a href="#Parallel-Old收集器" class="headerlink" title="Parallel Old收集器"></a>Parallel Old收集器</h2><p>该收集器在JDK6才开始提供的。它是Parallel Old收集器的老年代版本，使用多线程和“标记-整理”算法。</p><h2 id="CMS（Concurrent-Mark-Sweep）收集器"><a href="#CMS（Concurrent-Mark-Sweep）收集器" class="headerlink" title="CMS（Concurrent Mark Sweep）收集器"></a>CMS（Concurrent Mark Sweep）收集器</h2><p>CMS收集器是一种以获取最短回收停顿时间为目标的并发低停顿收集器，主要用于B/S系统的服务器上。</p><p>该收集器的运作过程包括4个步骤：</p><ul><li>初始标记：标记一下GC Roots能直接关联到的对象。</li><li>并发标记：进行GC Roots Tracing的过程。</li><li>重新标记：修正并发标记期间因用户程序继续运作而导致标记产生变动的那一部分对象的标记记录，这个阶段的停顿时间一般会比初始标记阶段稍长一些，但是远比并发标记的时间短。</li><li>并发清除。</li></ul><p>初始标记、重新标记这两步需要“Stop The World”，但是整个过程中耗时最长的并发标记和并发清除过程收集器线程都可以与用户线程一起工作。</p><p>该收集器有很明显的缺点：</p><ul><li>对CPU资源非常敏感，或者说面向并发设计的程序都对CPU资源比较敏感。在并发阶段，它虽然不会导致用户线程停顿，但是会因为占用一部分CPU资源而导致应用程序变慢，吞吐量会降低。CMS默认启动的回收线程数是（CPU数量+3）/4，也就是当CPU在4个以上时，并发回收时垃圾收集线程不少于25%的CPU资源，并且随着CPU数量的增加而下降。</li><li>无法处理浮动垃圾，可能出现“Conncurrent Mode Failure”失败而导致另一次Full GC的产生。在CMS并发清除阶段用户线程还在运行，这时产生的新垃圾CMS无法处理它们，只好留待下一次GC时再清理掉，被称之为“浮动垃圾”。CMS收集器不能等到老年代几乎完全被填满了再进行收集，需要预留一部分空间提供并发收集时的程序运作使用。要是CMS运行期间预留的内存无法满足程序需要，就会出现一次“Concurrent Mode Failure”失败，这是虚拟机临时启用Serial Old收集器来重新进行老年代的垃圾收集，这样的停顿时间很长。</li><li>使用“标记-清除”而产生的大量空间碎片，为此CMS提供了参数开启内存碎片整理功能。</li></ul><h2 id="G1收集器"><a href="#G1收集器" class="headerlink" title="G1收集器"></a>G1收集器</h2><p>并发与并行、分代收集、空间整合、预测停顿。</p><p>该收集器将Java堆划分为多个大小相等的独立区域（Region），新生代和老年代不再是物理隔离，而是一部分区域（不需要连续）的集合。G1跟踪各个区域里面的垃圾堆积的价值大小（回收所获得的空间大小以及回收所需时间的经验值），在后台维护一个优先列表，每次根据允许的收集时间，优先回收价值最大的区域。</p><p>G1中每个区域都有对应的Remembered Set，虚拟机发现程序在对Reference类型的数据进行写操作时，会产生Write Barrier暂时中断写操作，检查Reference引用的对象是否处于不同的区域之间，如果是，便通过Cardtable把相关引用信息记录到引用对象所属区域的Remembered Set中。当进行内存回收时，在GC根节点的枚举范围中加入Remembered Set即可保证不对全堆扫描也不会有遗漏。</p><p>G1收集器主要分为以下步骤：</p><ul><li>初始标记</li><li>并发标记</li><li>最终标记</li><li>筛选回收</li></ul><p>最终标记是为了修正并发标记期间因用户继续运作而导致标记产生变化的那一部分标记，虚拟机将这段这段时间对象变化记录在Remembered Set Logs里面，最终标记阶段需要把Remembered Set Logs的数据合并到Remembered Set中，这个阶段需要停顿线程，但是可以并行执行。最后在筛选回收阶段对区域的垃圾堆积的价值大小排序，根据用户所期望的GC停顿时间来定制回收计划。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;img src=&quot;./_image/垃圾收集器.png&quot; alt&gt;&lt;/p&gt;
+&lt;h2 id=&quot;Serial收集器&quot;&gt;&lt;a href=&quot;#Serial收集器&quot; class=&quot;headerlink&quot; title=&quot;Serial收集器&quot;&gt;&lt;/a&gt;Serial收集器&lt;/h2&gt;&lt;p&gt;
+      
+    
+    </summary>
+    
+      <category term="软件开发" scheme="https://hanekawasann.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="JVM" scheme="https://hanekawasann.github.io/tags/JVM/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>自动内存管理机制之HotSpot的算法实现</title>
+    <link href="https://hanekawasann.github.io/2019/06/16/%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6%E4%B9%8BHotSpot%E7%9A%84%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0/"/>
+    <id>https://hanekawasann.github.io/2019/06/16/自动内存管理机制之HotSpot的算法实现/</id>
+    <published>2019-06-16T14:17:32.000Z</published>
+    <updated>2019-06-16T14:17:58.156Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="枚举根节点（GC-Roots）"><a href="#枚举根节点（GC-Roots）" class="headerlink" title="枚举根节点（GC Roots）"></a>枚举根节点（GC Roots）</h2><p>可达性分析必须在一个能确保一致性的快照中进行——这里“一致性”的意思是指在整个分析期间整个执行系统看起来就像被冻结在某个时间点上，不可以出现分析过程中对象引用关系还在不断变化的情况，该点不满足的话分析结果准确性就无法得到保证。所以GC进行时必须停顿所有Java执行线程（Stop The World），即使在号称（几乎）不会发生停顿的CMS收集器中，枚举根节点时也是必须要停顿的。</p><p>HotSpo使用称为OopMap的数据结构来得知那些地方存放着对象引用，不然逐个检查全局性引用（常量或类静态属性）与执行上下文（栈帧中的本地变量表）会消耗很多的内存。在类加载完成的时候，HotSpot就把对象内什么偏移量上是什么类型的数据计算出来，在JIT编译过程中，也会在特定的位置记录下栈和寄存器中哪些位置是引用。</p><h2 id="安全点（Safepoint）"><a href="#安全点（Safepoint）" class="headerlink" title="安全点（Safepoint）"></a>安全点（Safepoint）</h2><p>OopMap存放的位置被称为“安全点”，即程序执行时并非在所有地方都能停顿下来开始GC，只有在到达安全点是才能停顿。</p><p>安全点的选定基本上是以程序“是否具有让程序长时间执行的特征”为标准进行选定的——因为每条执行指令的时间都非常短暂，程序不太可能因为指令流长度太长这个而过长时间运行，“长时间执行”的最明显特征就是指令序列复用，例如方法调用、循环跳转、异常跳转等，所以具有这些功能的指令才会产生安全点。</p><p>“Stop The World”有两种方案可功选择：抢断式中断和主动式中断。抢断式中断不需要线程的执行代码去注定配合，在GC发生时，首先把线程全部中断，如果发现有线程中断的地方不在安全点上，就恢复线程，让它“跑”到安全点上。主动式中断是当GC需要中断线程的时候，不直接对线程操作，仅仅简单地设置一个标志，各个线程执行时主动去轮询这个标志，发现中断标志为真时就自己中断挂起。轮询标志的地方和安全点是重合的，另外加上创建对象需要分配内存的地方。现在的虚拟机基本上都采用主动式中断。</p><h2 id="安全区域（Safe-Region）"><a href="#安全区域（Safe-Region）" class="headerlink" title="安全区域（Safe Region）"></a>安全区域（Safe Region）</h2><p>安全点机制保证了程序执行时，在不太长时间就会遇到可进入GC的安全点，但是如果程序不执行（没有分配CPU时间）的时候，典型的例子就是线程处于Sleep状态或者Blocked状态，这时线程无法响应JVM的中断请求。</p><p>安全区域是指在一段代码片段中，引用关系不会发生变化，在这个区域中的任意地方开始GC都是安全的。在线程执行到安全区域中的代码时，首先标识自己进入安全区域。在线程要离开安全区域时，它要检查系统是否已经完成了根节点枚举（或者是整个GC过程），如果完成了就继续执行，否则它必须等待直到收到可以安全离开安全区域的信号为止。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;枚举根节点（GC-Roots）&quot;&gt;&lt;a href=&quot;#枚举根节点（GC-Roots）&quot; class=&quot;headerlink&quot; title=&quot;枚举根节点（GC Roots）&quot;&gt;&lt;/a&gt;枚举根节点（GC Roots）&lt;/h2&gt;&lt;p&gt;可达性分析必须在一个能确保一致性的快
+      
+    
+    </summary>
+    
+      <category term="软件开发" scheme="https://hanekawasann.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="JVM" scheme="https://hanekawasann.github.io/tags/JVM/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>自动内存管理机制之垃圾回收算法</title>
+    <link href="https://hanekawasann.github.io/2019/06/16/%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6%E4%B9%8B%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95/"/>
+    <id>https://hanekawasann.github.io/2019/06/16/自动内存管理机制之垃圾回收算法/</id>
+    <published>2019-06-16T14:16:45.000Z</published>
+    <updated>2019-06-16T14:17:14.046Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="标记-清除算法"><a href="#标记-清除算法" class="headerlink" title="标记-清除算法"></a>标记-清除算法</h2><p>该算法首先标记出所有需要回收的对象，在标记完成后统一回收所有被标记的对象。</p><p>该算法有两个缺点：效率不高，标记和清除两个过程的效率都不高；空间问题，标记清除之后会产生大量不连续的内存碎片，空间碎片太多可能导致以后在程序运行过程中需要分配较大对象时，无法找到足够的连续内存而不得不提前触发另一次垃圾收集动作。</p><h2 id="复制算法"><a href="#复制算法" class="headerlink" title="复制算法"></a>复制算法</h2><p>该算法将可用内存按容量划分为大小相等的两块，每次只使用其中一块。当这一块内存用完了，就将还存活着的对象复制到另一块上面，然后再把已使用过的内存空间一次清理掉。</p><p>虽然该算法解决了效率问题，但是代价是将内存缩小一半，而且在对象存活率较高时就要进行较多的复制操作，效率会变变低。现在的商业虚拟机都采用这种收集算法来回收新生代，新生代中的对象98%都是“朝生夕死”的，所以并不需要按照1:1的比例来划分内存空间，而是将内存分为一块较大的Eden空间和两块较小的Survivor空间，每次使用Eden和其中一块Survivor还存活着的对象一次性地复制到另外一块Survivor空间上，最后清理掉Eden和刚才用过的Survivor空间。当Survivor空间不够用时，需要依赖其他内存（老年代）进行分配担保。HotSpot虚拟机默认Eden和Survivor的大小比例是8:1。</p><h2 id="标记-整理算法"><a href="#标记-整理算法" class="headerlink" title="标记-整理算法"></a>标记-整理算法</h2><p>根据老年代的特点，该算法首先标记出所有需要回收的对象，让所有存活的对象都向一端移动，然后直接清理掉端边界以外的内存。</p><h2 id="分代收集算法"><a href="#分代收集算法" class="headerlink" title="分代收集算法"></a>分代收集算法</h2><p>该算法根据对象存活周期的不同将内存划分为几块，一般是把Java堆分为新生代和老年代。在新生代中，每次垃圾收集时都发现有大批对象死去，只有少量存活，那就选用复制算法，只需要付出少量存活对象的复制成本就可以完成收集。而老年代因为对象存活率高、没有额外空间进行分配担保，就必须使用“标记-清理”或“标记-整理”算法来进行回收。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;标记-清除算法&quot;&gt;&lt;a href=&quot;#标记-清除算法&quot; class=&quot;headerlink&quot; title=&quot;标记-清除算法&quot;&gt;&lt;/a&gt;标记-清除算法&lt;/h2&gt;&lt;p&gt;该算法首先标记出所有需要回收的对象，在标记完成后统一回收所有被标记的对象。&lt;/p&gt;
+&lt;p&gt;该算法有两
+      
+    
+    </summary>
+    
+      <category term="软件开发" scheme="https://hanekawasann.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="JVM" scheme="https://hanekawasann.github.io/tags/JVM/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>自动内存管理机制之对象已死</title>
+    <link href="https://hanekawasann.github.io/2019/06/16/%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6%E4%B9%8B%E5%AF%B9%E8%B1%A1%E5%B7%B2%E6%AD%BB/"/>
+    <id>https://hanekawasann.github.io/2019/06/16/自动内存管理机制之对象已死/</id>
+    <published>2019-06-16T14:15:43.000Z</published>
+    <updated>2019-06-16T14:16:21.372Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="引用计数法"><a href="#引用计数法" class="headerlink" title="引用计数法"></a>引用计数法</h2><p>给对象添加一个引用计数器，每当有一个地方引用它时，计数器就加1；当引用失效时，计数器值就减1；任何时刻计数器为0的对象就是不可能在被使用的。这种方法无法解决对象之间循环引用的问题。</p><h2 id="可达性分析算法"><a href="#可达性分析算法" class="headerlink" title="可达性分析算法"></a>可达性分析算法</h2><p>通过一系列的被称为“GC Roots”的对象作为起始点，从这些节点开始向下搜索，搜索所走过的路径被称为引用链，当一个对象到GC Roots没有任何引用链相连时，则证明此对象是可不用的。</p><p>在Java中，可以作为GC Roots的对象包括下面几种：</p><ul><li>虚拟机栈（栈帧中的本地变量表）中引用的对象。</li><li>方法区中类静态属性引用的对象。</li><li>方法区中常量引用的对象。</li><li>本地方法栈中JNI（即一般说的Native方法）引用的对象。</li></ul><p>如果对象在进行可达性分析后发现没有与GC Roots相连接的引用链，那它将会被第一次标记并且进行一次筛选，筛选的条件是此对象是否有必要执行finalize方法。当对象没有覆盖finalize方法，或者finalize方法已经被虚拟机调用过，这两种都是没有必要执行的情况。</p><p>如果对象被判定为有必要执行finzlize方法，那么这个对象将会放置在一个叫做F-Queue的队列中，并在稍后一个由虚拟机自动建立的、低优先级的Finalizer线程中去执行它。稍后GC将对F-Queue中的对象进行第二次小规模标记。如果对象在finalize中，将自己重新与引用链上的任何一个对象建立关联，那么就可以拯救自己。如果对象这个时候还没有逃脱，那基本上它就真的被回收了。</p><h2 id="回收方法区"><a href="#回收方法区" class="headerlink" title="回收方法区"></a>回收方法区</h2><p>回收废弃常量与回收Java堆中的对象非常类似。常量没有被任何一个String对象引用，如果这时发生了内存回收，而且有必要的话，该常量会被移除常量池。常量池中的其他类（接口）、方法、字段的符号引用也与此类似。</p><p>类要满足以下条件才能算是“无用的类”：</p><ul><li>该类所有的实例都已经被回收，也就是Java堆中不存在该类的任何实例。</li><li>加载该类的类加载器已经被回收。</li><li>该类对应的Class对象没有在任何地方引用，无法在任何地方通过反射访问该类的方法。</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;引用计数法&quot;&gt;&lt;a href=&quot;#引用计数法&quot; class=&quot;headerlink&quot; title=&quot;引用计数法&quot;&gt;&lt;/a&gt;引用计数法&lt;/h2&gt;&lt;p&gt;给对象添加一个引用计数器，每当有一个地方引用它时，计数器就加1；当引用失效时，计数器值就减1；任何时刻计数器为0的对
+      
+    
+    </summary>
+    
+      <category term="软件开发" scheme="https://hanekawasann.github.io/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="JVM" scheme="https://hanekawasann.github.io/tags/JVM/"/>
+    
+  </entry>
   
   <entry>
     <title>第三思潮</title>
@@ -100,11 +228,11 @@
   </entry>
   
   <entry>
-    <title>HotSpot虚拟机对象</title>
-    <link href="https://hanekawasann.github.io/2019/05/12/HotSpot%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AF%B9%E8%B1%A1/"/>
-    <id>https://hanekawasann.github.io/2019/05/12/HotSpot虚拟机对象/</id>
+    <title>自动内存管理机制之HotSpot虚拟机对象</title>
+    <link href="https://hanekawasann.github.io/2019/05/12/%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6%E4%B9%8BHotSpot%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AF%B9%E8%B1%A1/"/>
+    <id>https://hanekawasann.github.io/2019/05/12/自动内存管理机制之HotSpot虚拟机对象/</id>
     <published>2019-05-12T08:57:09.000Z</published>
-    <updated>2019-05-12T12:51:07.627Z</updated>
+    <updated>2019-06-16T08:08:12.103Z</updated>
     
     <content type="html"><![CDATA[<h2 id="对象的内存布局"><a href="#对象的内存布局" class="headerlink" title="对象的内存布局"></a>对象的内存布局</h2><p>在HotSpot虚拟机中，对象在内存中存储的布局可以分为三块区域：</p><ul><li>对象头（Header）。</li><li>实例数据（Instance Data）。</li><li>对齐填充（Padding）。</li></ul><p>对象头包括两部分信息，第一部分用于存储对象自身的运行时数据，例如哈希码（HashCode）、GC分代年龄、锁状态标志、线程持有的锁、偏向线程ID、偏向时间戳等。另一部分是类型指针，即对象指向它的类元数据的指针。</p><p>实例数据是对象真正存储的有效信息，也是程序代码中所定义的各种类型的字段内容。</p><p>对齐填充并不是必然存在的，也没有特别的含义，它仅仅起着占位符的作用。由于HotSpot VM的自动内存管理系统要求对象起始地址必须是8字节的整倍数。当对象实例数据部分没有对齐时，就需要通过对齐填充来补全。</p><h2 id="对象的访问定位"><a href="#对象的访问定位" class="headerlink" title="对象的访问定位"></a>对象的访问定位</h2><p>Java程序通过栈上的reference数据来操作堆上的具体对象，而访问方式有两种：</p><ul><li>句柄访问：Java堆中将会划分一块内存在作为句柄池，reference中存储的就是对象的句柄地址，而句柄中包含了对象实例数据与类型各自的具体信息。</li><li>直接指针访问：Java堆对象的布局必须考虑如何放置访问类型数据相关的信息，而reference中存储的直接就是对象的地址。</li></ul><p>句柄访问最大的好处就是reference中存储的是稳定的句柄地址，在对象被移动（垃圾回收）时只会改变句柄中的实例数据指针，而reference本身不需要修改。</p><p>使用直接指针访问方式最大好处就是速度更快，它节省了一次指针定位的时间开销，由于对象的访问在Java堆中十分平凡，因此这类开销积少成多后也是一项非常可观的执行成本。</p>]]></content>
     
@@ -154,11 +282,11 @@
   </entry>
   
   <entry>
-    <title>Java内存区域</title>
-    <link href="https://hanekawasann.github.io/2019/05/11/Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/"/>
-    <id>https://hanekawasann.github.io/2019/05/11/Java内存区域/</id>
+    <title>自动内存管理机制之Java内存区域</title>
+    <link href="https://hanekawasann.github.io/2019/05/11/%E8%87%AA%E5%8A%A8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6%E4%B9%8BJava%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/"/>
+    <id>https://hanekawasann.github.io/2019/05/11/自动内存管理机制之Java内存区域/</id>
     <published>2019-05-11T02:15:10.000Z</published>
-    <updated>2019-05-12T09:11:03.981Z</updated>
+    <updated>2019-06-16T08:07:43.630Z</updated>
     
     <content type="html"><![CDATA[<p><img src="Java内存区域.png" alt="Java内存区域.png"></p><h2 id="程序计数器-Program-Counter-Register"><a href="#程序计数器-Program-Counter-Register" class="headerlink" title="程序计数器 Program Counter Register"></a>程序计数器 Program Counter Register</h2><p>程序计数器可以看做是当前线程所执行的字节码的行号指示器，它是线程私有的。此内存区域是唯一一个在Java虚拟机规范中没有规定任何OutOfMemoryError情况的区域。</p><h2 id="Java虚拟机栈-Java-Virtual-Machine-Stacks"><a href="#Java虚拟机栈-Java-Virtual-Machine-Stacks" class="headerlink" title="Java虚拟机栈 Java Virtual Machine Stacks"></a>Java虚拟机栈 Java Virtual Machine Stacks</h2><p>虚拟机栈描述的是Java方法执行的内存模型：每个方法在执行的同时都会创建一个栈帧（Stack Frame）用于存储局部变量、操作树栈、动态链接、方法出口等信息，它是私有的。</p><p>如果线程请求的栈深度大于虚拟机机所允许的深度将抛出StackOverflowError异常；如果虚拟机栈可以动态扩展，如果扩展时无法申请到足够的内存，就会抛出OutOfMemoryError异常。</p><h2 id="本地方法栈-Native-Method-Stack"><a href="#本地方法栈-Native-Method-Stack" class="headerlink" title="本地方法栈 Native Method Stack"></a>本地方法栈 Native Method Stack</h2><p>本地方法栈是虚拟机使用到的Native方法服务。与虚拟机一样，本地方法栈区域也会抛出StackOverflowError和OutOfMemoryError异常。</p><h2 id="Java堆-Java-Heap"><a href="#Java堆-Java-Heap" class="headerlink" title="Java堆 Java Heap"></a>Java堆 Java Heap</h2><p>Java堆是被所有线程共享的一块内存区域，在虚拟机启动时创建。此内存区域的唯一目的是存放对象实例。Java堆是垃圾收集器的主要区域，所有也被称为“GC堆”（Garbage Collected Heap）。如果在堆中没有内存完成实例分配，并且堆也无法再扩展时，将会抛出OutOfMemoryError异常。</p><h2 id="方法区-Method-Area"><a href="#方法区-Method-Area" class="headerlink" title="方法区 Method Area"></a>方法区 Method Area</h2><p>方法区用于存储已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。当方法区无法满足内存分配需求时，将抛出OutOfMemoryError异常。</p><p>HotSpot虚拟机把GC分代收集扩展至方法区，或者说使用永久代来实现方法区，这样HotSpot的垃圾收集器可以像管理Java堆一样管理这部分内存，能够省去专门为方法区编写内存管理代码的工作。在JDK1.7及其之后，已经把原本放在永久代的字符串常量池移出。</p><h2 id="运行时常量池-Runtime-Constant-Pool"><a href="#运行时常量池-Runtime-Constant-Pool" class="headerlink" title="运行时常量池 Runtime Constant Pool"></a>运行时常量池 Runtime Constant Pool</h2><p>运行时常量池是方法区的一部分，用于存放编译器生成的各种字面量和符号引用。运行时常量池具有动态性，并非预置入Class文件中常量池的内容才能进入方法区运行常量池，运行期间也可能将新的常量放入池中，这种特性常被开发人员利用得比较多的便是<code>java.lang.String#intern</code>。它也受到方法区内存的限制，当常量池无法再申请到内存时会抛出OutOfMemoryError异常。</p><h2 id="直接内存-Direct-Memory"><a href="#直接内存-Direct-Memory" class="headerlink" title="直接内存 Direct Memory"></a>直接内存 Direct Memory</h2><p>直接内存并不是虚拟机运行时的数据区的一部分，也不是Java虚拟机规范中定义的内存区域。它可以使用Native函数库直接分配堆外内存，然后通过一个存储在Java堆中的DirectByteBuffer对象作为这块内存的应用进行操作。当各个内存区域总和大于物理内存限制，也会导致动态扩展时出现OutOfMemoryError异常。</p>]]></content>
     
@@ -427,87 +555,6 @@
     
     
       <category term="音乐" scheme="https://hanekawasann.github.io/tags/%E9%9F%B3%E4%B9%90/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>恶魔人和汤浅政明：我们就从头开始说起吧</title>
-    <link href="https://hanekawasann.github.io/2018/05/27/%E6%81%B6%E9%AD%94%E4%BA%BA%E5%92%8C%E6%B1%A4%E6%B5%85%E6%94%BF%E6%98%8E%EF%BC%9A%E6%88%91%E4%BB%AC%E5%B0%B1%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E8%AF%B4%E8%B5%B7%E5%90%A7/"/>
-    <id>https://hanekawasann.github.io/2018/05/27/恶魔人和汤浅政明：我们就从头开始说起吧/</id>
-    <published>2018-05-27T14:58:25.000Z</published>
-    <updated>2019-05-07T15:55:54.642Z</updated>
-    
-    <content type="html"><![CDATA[<p>时间追溯到1972年，《恶魔人》的诞生无疑是个不小的冲击。</p><p>有人说这部漫画是色情暴力等成人元素的鼻祖，但其实这些元素早就被手冢治虫很好的把玩过了。如果说手冢治虫第一个将成熟的电影技法运用于漫画创作，那么我认为《恶魔人》的成就是真正将漫画带入到了成人向的“非人类”领域里。在这之前的“非人类”漫画，几乎都是“想象力的延拓”，“恶魔”的形象更接近于童话故事里的延伸，而恶魔人的出现真正触及到了“人的异化”，并以一种艺术的形式呈现出来。它所设置的恶魔人这个概念就是人向恶魔的一个过渡，人在原始本能与被社会环境异化这两者之间产生了冲突。</p><p>这让我想起了玛丽雪莱创作的《弗兰肯斯坦》，它们创造“非人类”的目的并非是实现一种怪异和想象，或是制造一种恐怖，而是把它当作一种工具，将“恶魔”这个形象从“人”这个母体中抽离出来，再通过“恶魔人”这个矛盾模型来反射人类，以此来讨论人的本质，并将人性，欲望，爱和真理这些词语放置在舞台上呈现出来。</p><p>当然，你可以说在之前的一些漫画作品中也会有这样的表达，但是恶魔人更加的模板化和元素化，他作为一个范例和蓝本影响了许多赫赫有名的作品。在这里不得不提的是三浦健太郎的《剑风传奇》，这部背景设置在欧洲的奇幻漫画常年稳居欧美漫画榜（myanimelist,animenewsnetwork等）第一名，其男主和男二相爱相杀（是真的相爱相杀）以及猎奇的怪物形象很明显都师承恶魔人。另一部我认为联系颇深的是eva剧场版《真心为你》所涉及的宗教和人文内涵，他们极其经典的毁灭结尾很难不让人把他们联系在一起。</p><p>那么，说了这么多，这部改编究竟好不好呢？我只能说很难评价，至少我觉得它是非常规的实验向作品（暴力，色情，表现力），但我认为《Devilman crybaby》不算是很“汤浅”。</p><p>首先我想说的是，作为是在netflix创作并且独播的动画，他的第一受众群体并不是日本观众，而是更加广泛的群体，我觉得可能是由于这个契机导致会将恶魔人的故事背景从近代（其实也就是197x年而已）搬到了现代，作品本身为了扩大适应度而糅杂了许多现代元素。这并非是一个完美的选择。</p><p>从商业化角度来看，的确有更好的吸引力。但从作品本身来看，它让《恶魔人》的巨大魅力之一——“荒蛮感”或者是宗教元素被悄然的抹去了，这就导致了没有原作的那种“史诗感”。什么是这种史诗感呢？《火之鸟》的未来篇中，火鸟冉冉升起的时刻，或者是《真心为你》的最后世界毁灭，真嗣在挣扎中掐死明日香的时刻，这都让我想起了《荷马史诗》里面的希腊歌剧，让人觉得有一种时间的力度与舞台感。而新版的恶魔人并没有展现出原作中庄严的荒芜感，也就是在现代技术手法中被剥离了宗教语言下的一种厚重，以至于许多意象化的表达并没有很好的实现出来。</p><p>比起ova，这部显然更加忠于原作，整体节奏中规中矩，想要传达的点基本已经达到了。牛尾宪辅依然是我的hero，画面冲击力也是近几年很少能够达到的。作为一部商业作品，它显然是成功的，不过要说这部作品有多好，这就得因人而异了。</p><p>下面来谈谈汤浅政明，在剧情角度，这部《新恶魔人》从某种角度暴露了汤浅不是很能驾驭“大剧情”这个缺点，一些转折点的呈现以及剧情推进的力度显然不算特别出彩。当然，大河内家门口已经堆满了锅等着他了。其实看过了《星空清理者》，之后无论发生了什么我都对大河内评价挺高的。</p><p>我们常常能听到这样一句话：“有汤浅的作品，画面表现力绝对很出色。”这是毋庸置疑的，但我想说的是，作为一个汤浅政明的老粉丝，我认为比起表现力，汤浅政明更擅长的是一种“表达能力”，或者说是通过多媒体的呈现方式进行交互式体验的能力。我总是觉得画面的表现总是服务于内容表达的，而汤浅政明给我一贯的感觉是非常擅长通过“有视觉冲击力的”或者是“奇诡”的画面表现来实现非常柔软的情感表达。举个简单的例子，《心理游戏》里面那段号称“炸裂”的奔跑片段，在狂乱无比的画面冲击下，他把许多意象和情感表达的内容都非常清晰且舒适的传达了出来，概述一下就是“将艺术融入情感传达”的能力。而受制于作品本身的“剧情性”，汤浅的这项技能并没有完全发挥出来，造成一种单有冲击力却缺少共鸣的感觉。</p><p>其次，这次处理感情戏的桥段并非汤浅的一贯特色。在之前接到的许多漫改或是小说改作品里，感情的呈现几乎都是“不拖泥带水的点到为止加上精巧结构的完美表达”，比如《乒乓》ep5在离家火车上无声抽泣的孔文革，或者是《四叠半》ep11男主平静的回忆自己在旧书摊上爱上明石的桥段，这样的情感表达用一个词语形容就是“干净”，但在铺垫和渲染之下又觉得已经精确的击中的情绪的点，回味无穷。而在《恶魔人》里，汤浅运用了大量的铺张式的情绪反复表达（如ep4），并且有些回忆杀的插入显然是有些脱离感。战斗场面不去说它，关于女主的心理呈现以及男主的“crybaby”这一层面的表现，本应该可以有更加好的情感处理。</p><p>提到汤浅的色情暴力，很难不把《恶魔人》和《兽爪》放在同一层面比较。《兽爪》是一部非常风格化的作品，他的背景就是“荒诞”，将因果从作品中抽离出来，呈现出的是清晰完整的，以浪漫主义为内核的爱情故事。首先从人物设定，男主是一个深受俄底浦斯情结（恋母情结）困扰的男人，心理学上，这种情结包容于“性的想象”以及“反复犹豫的矛盾性格”里面。而女主是一个不肯接受自身身份，想要把“自己”外化到“他者”以实现自我肯定的外向女人，男女主的设定非常的微妙且精细，导致了其中的色情暴力桥段让人感觉既舒适又合理。而且兽爪里的色情表达更偏向一种艺术性的“软”色情，虽然画面很“硬”，但是给人的体验却很柔软（更好的例子是mindgame里的做爱，smooth as f*ck）。而对于《恶魔人》来说，色情暴力仍旧是必不可少的，但是是一种硬色情暴力，讲究的是纯画面，延伸的角度是“冲击力”而不是表达内容的能力，我认为目的达到了，但这并没有发挥汤浅最擅长的地方。</p><p>另一个让我觉得有些遗憾的是，把老作品提上来，少了一种新鲜感。比如我喜欢看1988年gainax做的《飞跃巅峰》，里面涉及到了“在光速里面时间有差距而形成的剧情”，但我在这之前已经看过了《星之声》以及《星际穿越》，再看《飞跃巅峰》就觉得没有那种震撼了。同样的，人与恶魔的故事已经看过无数了，虽然做了很精细的改编，仍然少了一种精神上的冲击力。</p><p>在2014年成立了SCIENCE SARU公司之后，汤浅政明一直在努力实现自己想要实现的东西。他在之前与渡边信一郎讨论过“动画是否应被主流大众认可”，也曾经透露出想接近商业动画的想法。《恶魔人》无疑是一个很好的机会，通过一部完整的娱乐性很强的作品以及netflix的完美传播平台，汤浅也在做着自己的尝试，没有理由不去支持。</p><p>总结一下：《恶魔人》不算很满意，但实现了一些应该实现的东西。还有，我永远喜欢汤浅政明.jpg</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;时间追溯到1972年，《恶魔人》的诞生无疑是个不小的冲击。&lt;/p&gt;
-&lt;p&gt;有人说这部漫画是色情暴力等成人元素的鼻祖，但其实这些元素早就被手冢治虫很好的把玩过了。如果说手冢治虫第一个将成熟的电影技法运用于漫画创作，那么我认为《恶魔人》的成就是真正将漫画带入到了成人向的“非人类
-      
-    
-    </summary>
-    
-      <category term="ACG" scheme="https://hanekawasann.github.io/categories/ACG/"/>
-    
-    
-      <category term="DEVILMAN crybaby" scheme="https://hanekawasann.github.io/tags/DEVILMAN-crybaby/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>2017网易云音乐陪你温暖同行</title>
-    <link href="https://hanekawasann.github.io/2018/05/27/2017%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E9%99%AA%E4%BD%A0%E6%B8%A9%E6%9A%96%E5%90%8C%E8%A1%8C/"/>
-    <id>https://hanekawasann.github.io/2018/05/27/2017网易云音乐陪你温暖同行/</id>
-    <published>2018-05-27T14:45:55.000Z</published>
-    <updated>2019-05-07T16:01:28.539Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote><p>网易云音乐陪你温暖同行</p></blockquote><p><img src="1.png" alt="1.png"><br><img src="2.png" alt="2.png"><br><img src="3.png" alt="3.png"><br><img src="4.png" alt="4.png"><br><img src="5.png" alt="5.png"><br><img src="6.png" alt="6.png"><br><img src="7.png" alt="7.png"><br><img src="8.png" alt="8.png"><br><img src="9.png" alt="9.png"><br><img src="10.png" alt="10.png"><br><img src="11.png" alt="11.png"><br><img src="12.png" alt="12.png"><br><img src="13.png" alt="13.png"><br><img src="14.png" alt="14.png"></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;blockquote&gt;
-&lt;p&gt;网易云音乐陪你温暖同行&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;&lt;img src=&quot;1.png&quot; alt=&quot;1.png&quot;&gt;&lt;br&gt;&lt;img src=&quot;2.png&quot; alt=&quot;2.png&quot;&gt;&lt;br&gt;&lt;img src=&quot;3.png&quot; alt=&quot;3.p
-      
-    
-    </summary>
-    
-      <category term="碎碎念" scheme="https://hanekawasann.github.io/categories/%E7%A2%8E%E7%A2%8E%E5%BF%B5/"/>
-    
-    
-      <category term="音乐" scheme="https://hanekawasann.github.io/tags/%E9%9F%B3%E4%B9%90/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>青空</title>
-    <link href="https://hanekawasann.github.io/2018/05/27/%E9%9D%92%E7%A9%BA/"/>
-    <id>https://hanekawasann.github.io/2018/05/27/青空/</id>
-    <published>2018-05-27T14:35:22.000Z</published>
-    <updated>2019-05-07T16:02:17.944Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="歌曲"><a href="#歌曲" class="headerlink" title="歌曲"></a>歌曲</h2><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=839017&auto=0&height=66"></iframe><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=34144209&auto=0&height=66"></iframe><p><a href="http://music.163.com/#/song?id=619733&amp;userid=60673644" target="_blank" rel="noopener">《意外的辛运签》片尾曲</a></p><h2 id="歌词"><a href="#歌词" class="headerlink" title="歌词"></a>歌词</h2><p>ブラウン管（がん）の向（むこ）う側（がわ）<br>在显像管的另一侧</p><p>カッコつけた騎兵隊（きへいたい）が<br>耍帅的骑兵队们</p><p>インディアンを撃（う）ち倒（たお）した<br>用闪着光的手枪</p><p>ピカピカに光（ひかり）った銃（じゅう）で<br>打倒了印第安人</p><p>出来（でき）れば僕の憂鬱（ゆううつ）を<br>如果能够连同我的烦恼</p><p>撃（う）ち倒（たお）してくれれば よかったのに<br>也能消灭掉 就好了</p><p>神様（かみさん）にワイロを贈（おく）り<br>想着讨好上帝</p><p>天国（てんごく）へのパスポートをねだるなんて<br>得到去往天国的通行证</p><p>本気（ほんき）なのか?<br>是真的吗</p><p>誠実（せいじつ）さのかけらもなく<br>怎么看都不诚实的家伙</p><p>笑（わら）っている奴（やつ）がいるよ<br>在那里笑着</p><p>隠（かく）している　その手（て）を 見（み）せてみろよ<br>不要在隐藏了</p><p>生（う）まれた所（どころ）や 皮膚（ひふ）や目（め）の色（いろ）で<br>从我的出生地 皮肤和眼睛颜色</p><p>いったいこの僕の<br>你到底</p><p>何がわかると いうのだろう<br>能了解我什么</p><p>運転手（うんてんし）さん そのバスに<br>司机先生</p><p>僕も乗（の）っけて くれないか<br>能载我一程吗</p><p>行き先（さき）なら どこでもいい<br>去哪儿都好</p><p>こんなはずじゃ なかっただろ?<br>应该不是这样的吧</p><p>歴史（れきし）が僕を 問（と）いつめる<br>历史在不停的追问我</p><p>まぶしいほど 青い空の真（ま）下で<br>在耀眼的 青空之下</p><p>生（う）まれた所（どころ）や 皮膚（ひふ）や目（め）の色（いろ）で<br>从我的出生地 皮肤和眼睛颜色</p><p>いったいこの僕の<br>你到底</p><p>何がわかると いうのだろう<br>能了解我什么</p><p>運転手（うんてんし）さん そのバスに<br>司机先生</p><p>僕も乗（の）っけて くれないか<br>能载我一程吗</p><p>行き先（さき）なら どこでもいい<br>去哪儿都好</p><p>こんなはずじゃ なかっただろ?<br>应该不是这样的吧</p><p>歴史（れきし）が僕を 問（と）いつめる<br>历史在不停的追问我</p><p>まぶしいほど 青い空の真（ま）下で<br>在耀眼的 青空之下</p><p>青い空の真（ま）下で<br>青空之下</p><p>青い空の真（ま）下で<br>青空之下</p><p>青い空の 青い空の<br>青空 青空</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h2 id=&quot;歌曲&quot;&gt;&lt;a href=&quot;#歌曲&quot; class=&quot;headerlink&quot; title=&quot;歌曲&quot;&gt;&lt;/a&gt;歌曲&lt;/h2&gt;&lt;iframe frameborder=&quot;no&quot; border=&quot;0&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; widt
-      
-    
-    </summary>
-    
-      <category term="ACG" scheme="https://hanekawasann.github.io/categories/ACG/"/>
-    
-    
-      <category term="音乐" scheme="https://hanekawasann.github.io/tags/%E9%9F%B3%E4%B9%90/"/>
-    
-      <category term="THE ROLLING GIRLS" scheme="https://hanekawasann.github.io/tags/THE-ROLLING-GIRLS/"/>
     
   </entry>
   
